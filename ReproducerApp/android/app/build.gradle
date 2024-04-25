@@ -73,8 +73,28 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-
     namespace "com.reproducerapp"
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "ReproducerApp Dev"
+            resValue "string", "CodePushDeploymentKey", '""'
+        }
+        staging {
+            applicationIdSuffix ".prod"
+            resValue "string", "CodePushDeploymentKey", '""'
+            resValue "string", "app_name", "ReproducerApp Staging"
+        }
+        // -PsigningConfig=dev
+        prod {
+            resValue "string", "app_name", "ReproducerApp PROD"
+            resValue "string", "CodePushDeploymentKey", '""'
+        }
+    }
+
+
     defaultConfig {
         applicationId "com.reproducerapp"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -114,11 +134,6 @@ dependencies {
         implementation jscFlavor
     }
 }
-project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf' ] // Specify font files
-]
-
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
