@@ -1,5 +1,5 @@
-interface INativeSearch {
-  hi: string;
+export interface INativeSearch {
+	hi: string;
 }
 import DefaultVariableStorage from "./DefaultVariableStorage";
 

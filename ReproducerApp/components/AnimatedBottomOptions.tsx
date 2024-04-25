@@ -1,8 +1,21 @@
 import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
-import { BottomOptionsManager } from "../storage/BottomOptionsManager";
+import { BottomOptionsManager, INativeSearch } from "../storage/BottomOptionsManager";
 import { PureComponent, useEffect, useState } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { BackHandler, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { TextButtonComponent } from "./ButtonComponent";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { FollowsStorage } from "../storage/FollowsStorage";
+const COLOR_WHITE = '#FFFFFF',
+	COLOR_LIGHT_GREY = '#9F9F9F',
+	COLOR_GREY = '#424242',
+	COLOR_GREY_DARKER = '#272727',
+	COLOR_DARK_GRAY = '#1e1e1e',
+	COLOR_BLACK = '#0F0F0F',
+	COLOR_RED = '#CA2828',
+	COLOR_MAUVE = '#B12181',
+	COLOR_ORANGE = '#F4742B',
+	RIPPLE_COLOR = 'rgba(159, 159, 159,.1)';
 
 const OVERDRAG = 20;
 
@@ -11,9 +24,6 @@ function disableSheet() {
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-interface INativeSearch {
-  hi: string;
-}
 
 const animationDuration = 200;
 const animationElastic = Easing.elastic(0.8);
@@ -122,31 +132,49 @@ class BottomOpt extends PureComponent<BottomOptProps> {
 
 	render() {
 		const composant = this.props.composant;
+		if (composant.hi) {
+			const isFollow = FollowsStorage.isFollowed(composant.hi);
 			return <>
 				<View style={styles.optView}>
 					<View style={styles.optinView}>
 						<Text style={styles.typeText}>Artiste</Text>
-						<Text style={styles.nameText}>{artist.hi}</Text>
+						<Text style={styles.nameText}>{composant.hi}</Text>
 					</View>
+					<Image style={styles.optImage} source={{ uri: "https://www.lepoint.fr/images/2023/05/16/24512445lpw-24512611-article-the-weeknd-nom-abel-jpg_9523063_1250x625.jpg" }} />
 				</View>
 				<View style={styles.parrentViewButton}>
-					<Pressable
-            style={{width: '100%', height: 100, backgroundColor: "red"}}
+					<TextButtonComponent
 						onPress={() => {
-						  console.log("DETECT CLICK");
+							const composant2 = this.props.composant;
+							console.log("CLICKED CHECK");
+							FollowsStorage.pushOrRemove(composant2);
 							disableSheet();
 						}}
+						text={isFollow ? "Se désabonner" : "S'abonner"}
+						backgroundColor={COLOR_GREY}
 					/>
 				</View>
 				<View style={styles.separator} />
+				<PressButton icon="shuffle" onPress={() => {}} iconSize={scaled17} text="Aléatoire" />
+				<PressButton icon="radio" onPress={() => {}} text="Radio" />
+				<PressButton icon="share" onPress={() => {}} text="Partager" />
 			</>;
-		
-	
+		}
+	}
 }
-const RIPPLE_CONFIG = { color: 'rgba(159, 159, 159,.1)', foreground: true };
+const RIPPLE_CONFIG = { color: RIPPLE_COLOR, foreground: true };
 
 const scaled21 = 21;
 
+const PressButton = ({ text, onPress, icon, iconSize = scaled21 }: { text: string, onPress: () => void, icon: string; iconSize?: number; }) => (
+	<Pressable
+		style={styles.button}
+		onPress={onPress}
+		android_ripple={RIPPLE_CONFIG}>
+		<MaterialIcons name={icon} size={iconSize} color={COLOR_LIGHT_GREY} />
+		<Text style={styles.textButton}>{text}</Text>
+	</Pressable >
+);
 
 const styles = StyleSheet.create({
 	backdrop: {
@@ -159,7 +187,7 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		height: 'auto',
-		backgroundColor: "#1e1e1e",
+		backgroundColor: COLOR_DARK_GRAY,
 		bottom: -50,
 		paddingBottom: 60,
 	},
@@ -169,7 +197,7 @@ const styles = StyleSheet.create({
 		margin: 20
 	},
 	separator: {
-		borderBottomColor: "#9F9F9F",
+		borderBottomColor: COLOR_LIGHT_GREY,
 		margin: 20,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
@@ -178,20 +206,20 @@ const styles = StyleSheet.create({
 		marginRight: 'auto'
 	},
 	optImage: {
-		backgroundColor: "#424242",
+		backgroundColor: COLOR_GREY,
 		height: 100,
 		width: 100,
 		borderRadius: 12.5
 	},
 	typeText: {
-		color: '#9F9F9F',
+		color: COLOR_LIGHT_GREY,
 		fontSize: 13
 	},
 	parrentViewButton: {
 		height: 70
 	},
 	nameText: {
-		color: 'white',
+		color: COLOR_WHITE,
 		fontSize: 19,
 		fontWeight: '500',
 		marginTop: 18
@@ -204,7 +232,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	textButton: {
-		color: 'white',
+		color: COLOR_WHITE,
 		fontSize: 15,
 		marginLeft: 20,
 		flex: 1

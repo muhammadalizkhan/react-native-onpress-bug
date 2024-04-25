@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ReproducerApp</string>
+    <string name="CodePushDeploymentKey"></string>
 </resources>
