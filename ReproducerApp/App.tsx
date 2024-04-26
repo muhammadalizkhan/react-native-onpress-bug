@@ -17,7 +17,7 @@ const tabOptions = {
 };
 const HomeScreen = ({ navigation }: any) => {
   return <View style={{ flex: 1 }}>
-    <Pressable style={{ width: '100%', height: '20%' }} onPress={() => {
+    <Pressable style={{ width: '100%', height: '20%', backgroundColor: 'yellow' }} onPress={() => {
       navigation.navigate('ArtistPage');
     }}>
       <Text>FIRST TO CLICK</Text>
