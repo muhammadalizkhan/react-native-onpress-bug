@@ -4,7 +4,6 @@ import { PureComponent, useEffect, useState } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { BackHandler, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TextButtonComponent } from "./ButtonComponent";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { FollowsStorage } from "../storage/FollowsStorage";
 const COLOR_WHITE = '#FFFFFF',
 	COLOR_LIGHT_GREY = '#9F9F9F',
@@ -171,7 +170,6 @@ const PressButton = ({ text, onPress, icon, iconSize = scaled21 }: { text: strin
 		style={styles.button}
 		onPress={onPress}
 		android_ripple={RIPPLE_CONFIG}>
-		<MaterialIcons name={icon} size={iconSize} color={COLOR_LIGHT_GREY} />
 		<Text style={styles.textButton}>{text}</Text>
 	</Pressable >
 );

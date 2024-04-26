@@ -80,17 +80,14 @@ android {
         dev {
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "ReproducerApp Dev"
-            resValue "string", "CodePushDeploymentKey", '""'
         }
         staging {
             applicationIdSuffix ".prod"
             resValue "string", "CodePushDeploymentKey", '""'
-            resValue "string", "app_name", "ReproducerApp Staging"
         }
         // -PsigningConfig=dev
         prod {
             resValue "string", "app_name", "ReproducerApp PROD"
-            resValue "string", "CodePushDeploymentKey", '""'
         }
     }
 
@@ -136,4 +133,3 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
